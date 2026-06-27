@@ -1,0 +1,15 @@
+# зависимости Node.js
+node_modules/
+
+# Java build
+target/
+
+# Expo
+.expo/
+
+# IDE (IntelliJ / WebStorm)
+.idea/
+
+# сборки
+dist/
+build/

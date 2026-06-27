@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: touragency-postgres
+    environment:
+      POSTGRES_DB: touragency
+      POSTGRES_USER: touragency_user
+      POSTGRES_PASSWORD: touragency_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - touragency_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U touragency_user -d touragency"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: touragency-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/touragency
+      SPRING_DATASOURCE_USERNAME: touragency_user
+      SPRING_DATASOURCE_PASSWORD: touragency_pass
+    ports:
+      - "8080:8080"
+
+volumes:
+  touragency_pgdata:
