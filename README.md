@@ -76,7 +76,6 @@ TourAgency-MobileApp/
 
 ## Быстрый старт
 
-```bash
 # Запуск backend + PostgreSQL
 mvn spring-boot:run
 
