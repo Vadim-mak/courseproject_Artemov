@@ -1,93 +1,140 @@
 # Информационная система туристического агентства
 
-**Курсовой проект по дисциплине «Программная инженерия»**
-Северо-Кавказский федеральный университет, 2026 г.
+## О проекте
+**TourAgency-MobileApp** — информационная система туристического агентства, разработанная в рамках курсового проекта по дисциплине «Программная инженерия».
 
-- **Направление:** 09.03.04 «Программная инженерия»
-- **Траектория:** В — Мобильная разработка
-- **Архитектура:** PCMEF (Presentation-Control-Mediator-Entity-Foundation)
+Проект выполнен по направлению **09.03.04 «Программная инженерия»**, траектория **В — Мобильная разработка**.
 
-## Состав проекта
+Система предназначена для автоматизации работы туристического агентства: управление турами, пользователями, бронированиями и административными процессами.
 
-```
+Приложение включает:
+
+- регистрацию и авторизацию пользователей (JWT);
+- разделение ролей USER / ADMIN;
+- просмотр и управление турами;
+- систему бронирования;
+- административную панель;
+- REST API взаимодействие между клиентом и сервером;
+- мобильный клиент на React Native (Expo);
+- серверную часть на Spring Boot;
+- хранение данных в PostgreSQL.
+
+---
+
+## Используемый стек технологий
+
+### Mobile (Presentation)
+- React Native
+- Expo
+- TypeScript
+- Axios
+- React Navigation
+- AsyncStorage
+- Context API
+
+### Backend (PCMEF)
+- Java 21
+- Spring Boot 3.4.x
+- Spring Security
+- Spring Data JPA
+- JWT Authentication
+- PostgreSQL 16
+- Swagger / OpenAPI
+- Maven
+- JUnit 5
+- Mockito
+- JaCoCo
+
+---
+
+## Ключевые факты о репозитории
+
+| Показатель | Значение |
+|------------|----------|
+| Архитектура | PCMEF |
+| Backend | Spring Boot |
+| Mobile | React Native + Expo |
+| БД | PostgreSQL |
+| API стиль | REST |
+| Документация | docs/ (8 разделов) |
+| Контейнеризация | Docker Compose |
+
+---
+
+## Структура проекта
+
+
 TourAgency-MobileApp/
-├── backend/      # Spring Boot — Control / Mediator / Entity / Foundation
-├── mobile/       # React Native (Expo) — Presentation
-├── database/     # DDL-скрипты PostgreSQL
-├── docs/         # Документация по этапам курсового проекта
+├── backend/ # Spring Boot (Control / Mediator / Entity / Foundation)
+├── mobile/ # React Native (Presentation layer)
+├── database/ # SQL DDL скрипты PostgreSQL
+├── docs/ # Документация проекта
 └── docker-compose.yml
-```
+
+
+---
 
 ## Быстрый старт
 
-```bash
-# 1. Запуск backend + PostgreSQL через Docker:
-docker-compose up -d
+# Запуск backend + PostgreSQL
+mvn spring-boot:run
 
-# 2. Запуск мобильного клиента:
-cd mobile && npm install && npm start
-```
+# Запуск мобильного приложения
+cd mobile
+npm install
+npx expo start    
 
-Swagger UI: http://localhost:8080/swagger-ui.html
+http://localhost:8080/swagger-ui.html
 
-Учётная запись администратора (демо): `admin@touragency.local` / `Admin123!`
+Архитектура (PCMEF)
 
-## Архитектура PCMEF
+Проект реализован по архитектуре PCMEF (Presentation-Control-Mediator-Entity-Foundation):
 
-```
-┌─────────────────────────────────────────────┐
-│   КЛИЕНТ (React Native)                      │
-│   ┌─────────────────┐                        │
-│   │  Presentation   │  screens/, components/ │
-│   └────────┬────────┘                        │
-│            │ REST / JSON (HTTP)              │
-└────────────┼────────────────────────────────┘
-             │
-┌────────────┼────────────────────────────────┐
-│   СЕРВЕР (Spring Boot)                       │
-│   ┌────────▼────────┐                        │
-│   │    Control      │  @RestController        │
-│   └────────┬────────┘                        │
-│            │ IxxxService                     │
-│   ┌────────▼────────┐                        │
-│   │    Mediator     │  @Service + транзакции │
-│   └────────┬────────┘                        │
-│            │ бизнес-методы Entity            │
-│   ┌────────▼────────┐                        │
-│   │     Entity      │  JPA + бизнес-логика   │
-│   └────────┬────────┘                        │
-│            │ IxxxRepository                  │
-│   ┌────────▼────────┐                        │
-│   │   Foundation    │  Spring Data JPA       │
-│   └────────┬────────┘                        │
-│            ▼                                 │
-│      PostgreSQL 16                           │
-└─────────────────────────────────────────────┘
-```
+Слой	Расположение	Ответственность
+Presentation	mobile/	UI, экраны, навигация
+Control	backend/controller	REST API, входные запросы
+Mediator	backend/service	бизнес-логика и транзакции
+Entity	backend/entity	доменные модели (JPA)
+Foundation	repository, config	доступ к БД и конфигурация
+REST API (основные эндпоинты)
+Аутентификация
+POST /api/auth/register
+POST /api/auth/login
+Пользователь
+GET /api/profile/me
+PUT /api/profile/me
+Туры и бронирования
+GET /api/tours
+POST /api/bookings
+GET /api/bookings/me
+Админ-панель
+GET /api/admin/users
+Документация
 
-## Статистика разработки
+Папка docs/ содержит:
 
-### Метрики Git
+бизнес-анализ (IDEF0)
+требования (Use Case, Domain Model)
+архитектура PCMEF
+ER-диаграмма базы данных
+диаграммы последовательностей
+описание реализации
+UI-скриншоты
+итоговая пояснительная записка
+Статистика разработки
+Backend: Spring Boot 3.4.x
+Mobile: React Native + Expo
+Архитектура: PCMEF
+REST endpoints: реализованы
+Документация: 8 разделов
+Контейнеризация: Docker Compose
+Скриншоты и схемы
+Интерфейс мобильного приложения
+ER-диаграмма базы данных
+PCMEF архитектура
+Use Case диаграммы
+Диаграммы последовательностей
 
-- Всего коммитов: *(заполнить перед защитой)*
-- Период: 01.03.2026 – 30.05.2026
-- Средняя частота: *(заполнить)*
 
-### График активности
-
-![Активность коммитов](docs/images/git-commit-activity.png)
-
-### Тепловая карта
-
-![Распределение по времени](docs/images/git-punch-card.png)
-
-## Документация
-
-- [docs/01-business-model](docs/01-business-model/README.md) — Бизнес-анализ, IDEF0
-- [docs/02-requirements](docs/02-requirements/README.md) — Use Case, Domain Model
-- [docs/03-architecture](docs/03-architecture/README.md) — Диаграмма пакетов PCMEF
-- [docs/04-database](docs/04-database/README.md) — ER-диаграмма, DDL
-- [docs/05-design](docs/05-design/README.md) — Диаграммы последовательности
-- [docs/06-implementation](docs/06-implementation/README.md) — Структура кода, тесты
-- [docs/07-ui](docs/07-ui/README.md) — Скриншоты интерфейсов
-- [docs/08-final](docs/08-final/) — ТЗ, руководства, пояснительная записка
+Итог
+Проект представляет собой полнофункциональную клиент-серверную систему туристического агентства с мобильным приложением и REST backend-ом, реализованную с применением современной архитектуры PCMEF и практик программной инженерии.
